@@ -20,6 +20,8 @@ const progressFill = document.getElementById('progressFill');
 const progressPct = document.getElementById('progressPct');
 const progressText = document.getElementById('progressText');
 const logList = document.getElementById('logList');
+const inputSection = document.getElementById('inputSection');
+const doneSection = document.getElementById('doneSection');
 
 // --- Global Config ---
 const TARGET_HEIGHT = 920;
@@ -333,6 +335,9 @@ form.addEventListener('submit', async (e) => {
     if (!excelInput.files[0] || !timemarkInput.files[0]) return;
 
     renderBtn.disabled = true;
+    inputSection.classList.add('hidden');
+    doneSection.classList.add('hidden');
+    
     logList.innerHTML = '';
     progressContainer.classList.remove('hidden');
     progressPct.textContent = '0%';
@@ -369,11 +374,12 @@ form.addEventListener('submit', async (e) => {
             errors.forEach(e => log("❌ " + e));
             log("Terdapat data error. Silakan perbaiki excel sebelum merender.");
             renderBtn.disabled = false;
+            inputSection.classList.remove('hidden');
             return;
         }
 
         const total = rows.length;
-        if (total === 0) { log("Data kosong."); renderBtn.disabled = false; return; }
+        if (total === 0) { log("Data kosong."); renderBtn.disabled = false; inputSection.classList.remove('hidden'); return; }
         
         log(`Validasi OK. Memproses ${total} data...`);
         const batTL = buildBatteryTimeline(total);
@@ -401,10 +407,12 @@ form.addEventListener('submit', async (e) => {
         
         log("✅ Sukses! ZIP sedang diunduh.");
         progressText.textContent = "Selesai!";
+        doneSection.classList.remove('hidden');
         
     } catch(err) {
         log("❌ Kesalahan Sistem: " + err.message);
         console.error(err);
+        inputSection.classList.remove('hidden');
     }
     
     renderBtn.disabled = false;

@@ -41,36 +41,52 @@
                 <p class="sys-msg">> INITIALIZING SYSTEM COMPOSITING...</p>
                 <p class="sys-msg">> AWAITING OBFUSCATED DATA INPUT</p>
 
-                <form id="renderForm" class="form-grid">
-                    
-                    <div class="input-group">
-                        <label for="excelFile">>> root@sms-bot:~/ LOAD_EXCEL_DATA <span class="blink">_</span></label>
-                        <div class="file-drop-zone" id="excelDropZone">
-                            <span class="material-icons-outlined">folder_special</span>
-                            <span class="file-name" id="excelName">[ NIL ] CLICK TO BROWSE DB</span>
-                            <input type="file" id="excelFile" accept=".xlsx, .xls" required>
-                        </div>
+                <div id="inputSection">
+                    <div class="sys-notes">
+                        >&nbsp;<strong>[ FITUR SISTEM AKTIF ]</strong><br>
+                        >&nbsp;- Normalisasi & Koreksi Nomor Otomatis (+62)<br>
+                        >&nbsp;- 4 Variasi Teks Sapaan Acak per Resi<br>
+                        >&nbsp;- Sapaan Waktu Dinamis (Pagi/Siang/Malam terfokus jam obrolan pertama)<br>
+                        >&nbsp;- Kompresi Ukuran Gambar Otomatis (&lt; 1.9MB)<br>
+                        >&nbsp;- Pengemasan Unduhan ZIP Massal
                     </div>
 
-                    <div class="input-group">
-                        <label for="timemarkFile">>> root@sms-bot:~/ LOAD_GPS_TIMEMARK <span class="blink">_</span></label>
-                        <div class="file-drop-zone" id="timemarkDropZone">
-                            <span class="material-icons-outlined">satellite</span>
-                            <span class="file-name" id="timemarkName">[ NIL ] BROWSE GPS DATA</span>
-                            <input type="file" id="timemarkFile" accept="image/jpeg, image/png, image/webp" required>
+                    <form id="renderForm" class="form-grid">
+                        
+                        <div class="input-group">
+                            <label for="excelFile">>> root@sms-bot:~/ LOAD_EXCEL_DATA <span class="blink">_</span></label>
+                            <div class="file-drop-zone" id="excelDropZone">
+                                <span class="material-icons-outlined">folder_special</span>
+                                <span class="file-name" id="excelName">[ NIL ] CLICK TO BROWSE DB</span>
+                                <input type="file" id="excelFile" accept=".xlsx, .xls" required>
+                            </div>
                         </div>
-                        <img id="timemarkPreview" style="display: none;" crossorigin="anonymous">
-                    </div>
 
-                    <div class="action-section">
-                        <button type="submit" id="renderBtn" class="btn-primary">
-                            [ EXECUTE // RENDER ]
-                        </button>
-                        <div style="text-align: center; margin-top: 15px; color: #00aaff; font-size: 0.85rem; text-shadow: 0 0 5px rgba(0,170,255,0.4); letter-spacing: 2px;">
-                            © COPYRIGHT BY MRCA
+                        <div class="input-group">
+                            <label for="timemarkFile">>> root@sms-bot:~/ LOAD_GPS_TIMEMARK <span class="blink">_</span></label>
+                            <div class="file-drop-zone" id="timemarkDropZone">
+                                <span class="material-icons-outlined">satellite</span>
+                                <span class="file-name" id="timemarkName">[ NIL ] BROWSE GPS DATA</span>
+                                <input type="file" id="timemarkFile" accept="image/jpeg, image/png, image/webp" required>
+                            </div>
+                            <img id="timemarkPreview" style="display: none;" crossorigin="anonymous">
                         </div>
-                    </div>
-                </form>
+
+                        <div class="action-section">
+                            <button type="submit" id="renderBtn" class="btn-primary">
+                                [ EXECUTE // RENDER ]
+                            </button>
+                            <div style="text-align: center; margin-top: 15px; color: #00aaff; font-size: 0.85rem; text-shadow: 0 0 5px rgba(0,170,255,0.4); letter-spacing: 2px;">
+                                © COPYRIGHT BY MRCA
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="doneSection" class="hidden" style="text-align: center; margin-top: 2rem;">
+                    <p class="sys-msg blink" style="color: var(--term-fg); margin-bottom: 20px;">> OPERATION COMPLETED SUCCESSFULLY.</p>
+                    <button class="btn-primary" onclick="location.reload()" style="color: #00ff00; border-color: #00ff00; width: 50%;">[ REBOOT SYSTEM // MULAI BARU ]</button>
+                </div>
 
                 <div id="progressContainer" class="progress-container hidden">
                     <div class="progress-header">
