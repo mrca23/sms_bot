@@ -243,26 +243,35 @@ function renderTemplateToDOM(ctx) {
 async function processRow(row, ziplayer, batTL, sigTL, netTL) {
     const pos = row._pos;
     const tglText = buildTanggalTeksTimeline(row.__tgl_parsed);
-    const h1 = rand(7, 21);
-    const m1 = rand(0, 59);
-    const time1Str = `${String(h1).padStart(2, "0")}.${String(m1).padStart(2, "0")}`;
-    
-    let greetingTime = "Selamat malam";
-    if (h1 >= 4 && h1 < 11) greetingTime = "Selamat pagi";
-    else if (h1 >= 11 && h1 <= 14) greetingTime = "Selamat siang";
-    else if (h1 >= 15 && h1 <= 18) greetingTime = "Selamat sore";
+    const t1 = { h: rand(7, 21), m: rand(0, 59) };
+    const t2 = { h: rand(7, 21), m: rand(0, 59) };
+    const t3 = { h: rand(7, 21), m: rand(0, 59) };
 
-    const templates = [greetingTime, "Halo kaka", "Hai kaka", "Assalamualaikum"];
-    const selectedGreeting = templates[Math.floor(Math.random() * templates.length)];
+    function formatT(t) { return `${String(t.h).padStart(2, "0")}.${String(t.m).padStart(2, "0")}`; }
+    function getGreeting(h) {
+        if (h >= 4 && h < 11) return "Selamat pagi";
+        if (h >= 11 && h <= 14) return "Selamat siang";
+        if (h >= 15 && h <= 18) return "Selamat sore";
+        return "Selamat malam";
+    }
+
+    const templateIdx = Math.floor(Math.random() * 4); // 0=Waktu, 1=Halo, 2=Hai, 3=Assalam
     
-    const msg = `${selectedGreeting} kami dari J&T Express ${row.kota} mau konfirmasi paket :\nNo Resi : ${row.resi}\nMOHON SHARELOCK ALAMAT JELAS\nJIKA MAU DI ANTAR, PAKET HANYA DI TAHAN SELAMA 3 HARI`;
+    function buildMsg(t) {
+        let greet = "";
+        if (templateIdx === 0) greet = getGreeting(t.h);
+        else if (templateIdx === 1) greet = "Halo kaka";
+        else if (templateIdx === 2) greet = "Hai kaka";
+        else greet = "Assalamualaikum";
+        return `${greet} kami dari J&T Express ${row.kota} mau konfirmasi paket :\nNo Resi : ${row.resi}\nMOHON SHARELOCK ALAMAT JELAS\nJIKA MAU DI ANTAR, PAKET HANYA DI TAHAN SELAMA 3 HARI`;
+    }
 
     const ctx = {
         TIME: batTL[pos].time, BATT: batTL[pos].battery, BATT_COLOR: batteryColor(batTL[pos].battery),
         SIGNAL_HTML: signalBars(sigTL[pos]), NETWORK: netTL[pos], NOTIFICATIONS: notifHTML(notifIcons(pos)),
         PHONE: row.hp,
-        DATE1: `${tglText.DATE1} ${time1Str}`, DATE2: `${tglText.DATE2} ${randomBubbleTime()}`, DATE3: `${tglText.DATE3} ${randomBubbleTime()}`,
-        MSG1: msg, MSG2: msg, MSG3: msg,
+        DATE1: `${tglText.DATE1} ${formatT(t1)}`, DATE2: `${tglText.DATE2} ${formatT(t2)}`, DATE3: `${tglText.DATE3} ${formatT(t3)}`,
+        MSG1: buildMsg(t1), MSG2: buildMsg(t2), MSG3: buildMsg(t3),
     };
 
     renderTemplateToDOM(ctx);
