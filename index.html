@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL // SMS BOT</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+</head>
+<body>
+    
+    <div class="crt-overlay"></div>
+    <div class="app-container ui-theme-hacker">
+        <main class="terminal-window">
+            
+            <header class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">root@sms-bot:~</span>
+            </header>
+            
+            <div class="terminal-body">
+                <div class="ascii-art">
+  ___ __  __ ___   ___  ___ _____ 
+ / __|  \/  / __| | _ )/ _ \_   _|
+ \__ \ |\/| \__ \ | _ \ (_) || |  
+ |___/_|  |_|___/ |___/\___/ |_|  
+              [ V 2.0 // BYPASS ]
+                </div>
+                
+                <p class="sys-msg">> INITIALIZING SYSTEM COMPOSITING...</p>
+                <p class="sys-msg">> AWAITING OBFUSCATED DATA INPUT</p>
+
+                <form id="renderForm" class="form-grid">
+                    
+                    <div class="input-group">
+                        <label for="excelFile">>> root@sms-bot:~/ LOAD_EXCEL_DATA <span class="blink">_</span></label>
+                        <div class="file-drop-zone" id="excelDropZone">
+                            <span class="material-icons-outlined">folder_special</span>
+                            <span class="file-name" id="excelName">[ NIL ] CLICK TO BROWSE DB</span>
+                            <input type="file" id="excelFile" accept=".xlsx, .xls" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="timemarkFile">>> root@sms-bot:~/ LOAD_GPS_TIMEMARK <span class="blink">_</span></label>
+                        <div class="file-drop-zone" id="timemarkDropZone">
+                            <span class="material-icons-outlined">satellite</span>
+                            <span class="file-name" id="timemarkName">[ NIL ] BROWSE GPS DATA</span>
+                            <input type="file" id="timemarkFile" accept="image/jpeg, image/png, image/webp" required>
+                        </div>
+                        <img id="timemarkPreview" style="display: none;" crossorigin="anonymous">
+                    </div>
+
+                    <div class="action-section">
+                        <button type="submit" id="renderBtn" class="btn-primary">
+                            [ EXECUTE // RENDER ]
+                        </button>
+                    </div>
+                </form>
+
+                <div id="progressContainer" class="progress-container hidden">
+                    <div class="progress-header">
+                        <span id="progressText">> Analyzing payloads...</span>
+                        <span id="progressPct">[ 0% ]</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                
+                <div id="logArea" class="log-area">
+                    <ul id="logList"></ul>
+                </div>
+                
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- RENDER AREA (Hidden from user view, but kept in DOM to allow html2canvas to read styles correctly) -->
+    <div id="render-area" style="position: absolute; left: -9999px; top: 0px; background: white;">
+        
+        <!-- SMS TEMPLATE CONTAINER -->
+        <div id="sms-template" class="phone">
+            <div class="statusbar">
+                <span class="time" id="sms-time"></span>
+                <div class="s-right">
+                    <span id="sms-notifications"></span>
+                    <span class="volte" id="sms-network"></span>
+                    <div class="signal" id="sms-signal"></div>
+                    <div class="battery">
+                        <div class="bat-body"><div class="level" id="sms-batt-level"></div></div>
+                        <div class="cap"></div>
+                        <span class="pct" id="sms-batt-text"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="header">
+                <div class="head-top">
+                    <span class="material-icons-outlined back">arrow_back</span>
+                    <div class="hp" id="sms-phone"></div>
+                    <div class="h-space"></div>
+                    <span class="material-icons-outlined call">call</span>
+                    <span class="material-icons-outlined more">more_vert</span>
+                </div>
+                <div class="head-sub">Indonesia</div>
+            </div>
+            <div class="chat">
+                <div class="date" id="sms-date1"></div>
+                <div class="wrap">
+                    <div class="bubble" id="sms-msg1"></div>
+                    <div class="status">Terkirim</div>
+                </div>
+                <div class="date" id="sms-date2"></div>
+                <div class="wrap">
+                    <div class="bubble" id="sms-msg2"></div>
+                    <div class="status">Terkirim</div>
+                </div>
+                <div class="date" id="sms-date3"></div>
+                <div class="wrap">
+                    <div class="bubble" id="sms-msg3"></div>
+                    <div class="status">Terkirim</div>
+                </div>
+            </div>
+            <div class="inputbar">
+                <div class="plus">+</div>
+                <div class="inp">Pesan</div>
+                <div class="send"><svg viewBox="0 0 24 24" fill="#bfbfbf"><path d="M2 12L21 3l-4 18-6-5-4 3z"/></svg></div>
+            </div>
+            <div class="nav">
+                <div class="rec"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nav-icon)" stroke-width="2"><line x1="5" y1="7" x2="19" y2="7"></line><line x1="5" y1="12" x2="19" y2="12"></line><line x1="5" y1="17" x2="19" y2="17"></line></svg></div>
+                <div class="home"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nav-icon)" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="3.5" ry="3.5"></rect></svg></div>
+                <div class="backnav"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--nav-icon)"><path d="M17 5 L6 12 L17 19 Z"/></svg></div>
+            </div>
+        </div>
+
+        <!-- CONTACT TEMPLATE CONTAINER -->
+        <div id="contact-template" class="phone">
+            <div class="statusbar">
+                <span class="time" id="contact-time"></span>
+                <div class="s-right">
+                    <span id="contact-notifications"></span>
+                    <span class="volte" id="contact-network"></span>
+                    <div class="signal" id="contact-signal"></div>
+                    <div class="battery">
+                        <div class="bat-body"><div class="level" id="contact-batt-level"></div></div>
+                        <div class="cap"></div>
+                        <span class="pct" id="contact-batt-text"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="header">
+                <div class="head-top">
+                    <span class="material-icons-outlined back">arrow_back</span>
+                    <div class="h-space"></div>
+                </div>
+            </div>
+            <div class="contact">
+                <div class="contact-main">
+                    <div class="avatar"><span class="material-icons-outlined">person</span></div>
+                    <div class="c-phone" id="contact-phone"></div>
+                    <div class="c-region">Indonesia</div>
+                    <div class="c-actions">
+                        <div class="c-action"><span class="material-icons-outlined">call</span><div>Panggil</div></div>
+                        <div class="c-action"><span class="material-icons-outlined">sms</span><div>Pesan</div></div>
+                        <div class="c-action"><span class="material-icons-outlined">videocam</span><div>Video</div></div>
+                    </div>
+                </div>
+                <div class="c-bottom-menu">
+                    <div class="c-bottom-item"><span class="material-icons-outlined">person_add_alt</span><div>Tambahkan</div></div>
+                    <div class="c-bottom-item"><span class="material-icons-outlined">person_off</span><div>Tambahkan ke daftar blokir</div></div>
+                    <div class="c-bottom-item"><span class="material-icons-outlined">more_vert</span><div>Pelajari lebih lanjut</div></div>
+                </div>
+            </div>
+            <div class="nav">
+                <div class="rec"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nav-icon)" stroke-width="2"><line x1="5" y1="7" x2="19" y2="7"></line><line x1="5" y1="12" x2="19" y2="12"></line><line x1="5" y1="17" x2="19" y2="17"></line></svg></div>
+                <div class="home"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nav-icon)" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="3.5" ry="3.5"></rect></svg></div>
+                <div class="backnav"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--nav-icon)"><path d="M17 5 L6 12 L17 19 Z"/></svg></div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
