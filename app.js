@@ -243,13 +243,25 @@ function renderTemplateToDOM(ctx) {
 async function processRow(row, ziplayer, batTL, sigTL, netTL) {
     const pos = row._pos;
     const tglText = buildTanggalTeksTimeline(row.__tgl_parsed);
-    const msg = `Assalamualaikum kami dari J&T Express ${row.kota} mau konfirmasi paket :\nNo Resi : ${row.resi}\nMOHON SHARELOCK ALAMAT JELAS\nJIKA MAU DI ANTAR, PAKET HANYA DI TAHAN SELAMA 3 HARI`;
+    const h1 = rand(7, 21);
+    const m1 = rand(0, 59);
+    const time1Str = `${String(h1).padStart(2, "0")}.${String(m1).padStart(2, "0")}`;
+    
+    let greetingTime = "Selamat malam";
+    if (h1 >= 4 && h1 < 11) greetingTime = "Selamat pagi";
+    else if (h1 >= 11 && h1 <= 14) greetingTime = "Selamat siang";
+    else if (h1 >= 15 && h1 <= 18) greetingTime = "Selamat sore";
+
+    const templates = [greetingTime, "Halo kaka", "Hai kaka", "Assalamualaikum"];
+    const selectedGreeting = templates[Math.floor(Math.random() * templates.length)];
+    
+    const msg = `${selectedGreeting} kami dari J&T Express ${row.kota} mau konfirmasi paket :\nNo Resi : ${row.resi}\nMOHON SHARELOCK ALAMAT JELAS\nJIKA MAU DI ANTAR, PAKET HANYA DI TAHAN SELAMA 3 HARI`;
 
     const ctx = {
         TIME: batTL[pos].time, BATT: batTL[pos].battery, BATT_COLOR: batteryColor(batTL[pos].battery),
         SIGNAL_HTML: signalBars(sigTL[pos]), NETWORK: netTL[pos], NOTIFICATIONS: notifHTML(notifIcons(pos)),
         PHONE: row.hp,
-        DATE1: `${tglText.DATE1} ${randomBubbleTime()}`, DATE2: `${tglText.DATE2} ${randomBubbleTime()}`, DATE3: `${tglText.DATE3} ${randomBubbleTime()}`,
+        DATE1: `${tglText.DATE1} ${time1Str}`, DATE2: `${tglText.DATE2} ${randomBubbleTime()}`, DATE3: `${tglText.DATE3} ${randomBubbleTime()}`,
         MSG1: msg, MSG2: msg, MSG3: msg,
     };
 
