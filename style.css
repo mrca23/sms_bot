@@ -147,20 +147,20 @@ body {
   width: 100%;
   padding: 1rem;
   background: transparent;
-  color: var(--term-fg);
-  border: 1px solid var(--term-fg);
+  color: #00aaff;
+  border: 1px solid #00aaff;
   font-family: inherit;
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.1s;
-  text-shadow: 0 0 5px rgba(0,255,0,0.5);
+  text-shadow: 0 0 5px rgba(0,170,255,0.5);
 }
 
 .btn-primary:hover {
-  background: var(--term-fg);
+  background: #00aaff;
   color: var(--term-bg);
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+  box-shadow: 0 0 15px rgba(0,170,255,0.4);
 }
 
 .btn-primary:disabled {
@@ -187,6 +187,7 @@ body {
   justify-content: space-between;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
+  color: #00aaff;
 }
 
 .progress-track {
@@ -198,10 +199,10 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: var(--term-fg);
+  background: #00aaff;
   width: 0%;
   transition: width 0.2s;
-  box-shadow: 0 0 10px rgba(0,255,0,0.4);
+  box-shadow: 0 0 10px rgba(0,170,255,0.4);
 }
 
 .log-area {
